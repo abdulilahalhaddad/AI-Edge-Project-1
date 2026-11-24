@@ -1,0 +1,93 @@
+{
+  "bookkeeping": [
+    "img_year",
+    "img_age",
+    "img_gap",
+    "img_coverage"
+  ],
+  "colour_change": [
+    "chg_green_idx",
+    "chg_texture"
+  ],
+  "colour_level": [
+    "valid_frac",
+    "mean_r",
+    "mean_g",
+    "mean_b",
+    "green_idx",
+    "texture"
+  ],
+  "embedding_change": [
+    "chg_pc_01",
+    "chg_pc_02",
+    "chg_pc_03",
+    "chg_pc_04",
+    "chg_pc_05",
+    "chg_pc_06",
+    "chg_pc_07",
+    "chg_pc_08",
+    "chg_cos"
+  ],
+  "embedding_level": [
+    "pc_01",
+    "pc_02",
+    "pc_03",
+    "pc_04",
+    "pc_05",
+    "pc_06",
+    "pc_07",
+    "pc_08",
+    "pc_09",
+    "pc_10",
+    "pc_11",
+    "pc_12",
+    "pc_13",
+    "pc_14",
+    "pc_15",
+    "pc_16"
+  ],
+  "flags": [
+    "has_image",
+    "has_change"
+  ],
+  "key": [
+    "zipcode",
+    "year"
+  ],
+  "model_inputs": [
+    "pc_01",
+    "pc_02",
+    "pc_03",
+    "pc_04",
+    "pc_05",
+    "pc_06",
+    "pc_07",
+    "pc_08",
+    "pc_09",
+    "pc_10",
+    "pc_11",
+    "pc_12",
+    "pc_13",
+    "pc_14",
+    "pc_15",
+    "pc_16",
+    "valid_frac",
+    "mean_r",
+    "mean_g",
+    "mean_b",
+    "green_idx",
+    "texture",
+    "chg_pc_01",
+    "chg_pc_02",
+    "chg_pc_03",
+    "chg_pc_04",
+    "chg_pc_05",
+    "chg_pc_06",
+    "chg_pc_07",
+    "chg_pc_08",
+    "chg_cos",
+    "chg_green_idx",
+    "chg_texture",
+    "img_age"
+  ]
+}
