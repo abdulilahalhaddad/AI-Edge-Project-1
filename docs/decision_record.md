@@ -11,7 +11,9 @@ Date: 25 November 2026. Status: test and stress-test data NOT opened.
 - **Image inputs:** not used in the headline model. On 2019 validation they did not improve any model and did no better than shuffled images.
 
 ## What will be scored on the locked data, once
-All of: zero, raw momentum and scaled momentum baselines; linear, ridge and lasso regression; decision tree; random forest; gradient boosted trees; random forest plus all image inputs.
+All of: zero, raw momentum and scaled momentum baselines; linear, ridge and lasso regression; decision tree; random forest; gradient boosted trees; neural network (one hidden layer of 32 units, penalty 1.0); random forest plus all image inputs; and, if the Colab image network passes its 2019 check (`src/05d_image_network.py`), random forest plus the image network's score with the blend weight chosen on 2018. A forest classifier gives the probability of beating the metro.
+The image network is not retrained before the test: it keeps the version trained on target years up to 2017.
+The whole procedure was rehearsed on development data first (`python src/08_test.py --rehearsal`, 2019 playing the test year); it reproduced the validation results exactly.
 Each is refit on training plus validation years with the settings above, then scored on target year 2023 (main test) and separately on 2020, 2021 and 2022 (stress test).
 
 ## Rule
