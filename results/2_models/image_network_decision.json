@@ -1,0 +1,11 @@
+{
+ "score_column": "image_score",
+ "blend_weight_chosen_on_2018": 0,
+ "gain_in_rank_corr_2019": 0.0,
+ "gain_95_interval": [
+  0.0,
+  0.0
+ ],
+ "adopt": false,
+ "rows_2019": 5596
+}

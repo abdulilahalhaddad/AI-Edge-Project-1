@@ -90,7 +90,8 @@ if len(args) > 1 and os.path.exists(dec_path) and not REHEARSAL:
     dec = json.load(open(dec_path))
     sc = pd.read_csv(args[1])[["zipcode", "row_year", dec["score_column"]]].rename(columns={"row_year": "input_year"})
     s = te[["zipcode", "input_year"]].merge(sc, on=["zipcode", "input_year"], how="left")[dec["score_column"]].fillna(0).values
-    pred["Random forest + image network"] = pred["Random forest"] + dec["blend_weight_chosen_on_2018"] * s
+    pred["Image network (photos only)"] = s
+    if dec["adopt"]: pred["Random forest + image network"] = pred["Random forest"] + dec["blend_weight_chosen_on_2018"] * s
 clf = RandomForestClassifier(n_estimators=300, min_samples_leaf=50, max_features=0.5, n_jobs=-1, random_state=SEED).fit(tr[FEATS], (tr[Y] > 0).astype(int))
 pred["probability_beats_metro"] = clf.predict_proba(te[FEATS])[:, 1]
 pred.to_csv("data/test_predictions.csv" if not REHEARSAL else f"{OUT}/predictions.csv", index=False)

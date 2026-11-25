@@ -45,8 +45,12 @@ learned on training years only.
 
 ```
 pip install -r requirements.txt
-bash run_all.sh path/to/HouseTS.csv path/to/image_features.parquet
+bash run_all.sh path/to/HouseTS.csv path/to/image_features.parquet [path/to/image_scores.csv]
 ```
+
+`image_scores.csv` comes from `src/05c_image_network_colab.ipynb`, which retrains a MobileNetV2 image network on
+the aerial photos. Run it in Google Colab on a T4 GPU (about 40 minutes); it needs `cnn_targets.csv`, which holds
+outcomes for target years 2014-2018 only.
 
 `image_features.parquet` holds the aerial-image inputs: ResNet-50 embeddings (pretrained, PCA fitted on
 images up to 2017) and colour statistics, one row per ZIP code and year. Total run time is about 20
@@ -63,10 +67,12 @@ src/
   03_features.py           20 inputs + 1 flag;  03b chart;  03c image inputs
   04_models.py             baselines and six models;  04b charts
   05_images.py             do image inputs help? (with placebo);  05b chart
+  05c_image_network_colab.ipynb   retrain an image network in Colab;  05d checks it on 2019
   06_impact.py             alpha and sourcing efficiency;  06b charts
   07_robustness_and_probability.py   neural network, ablation, census lag, probability;  07b chart
 figures/  1_explore/  2_models/  3_impact/
 results/  1_data/  2_models/  3_impact/     small result tables behind every chart
+  08_test.py               the one-time final test (--rehearsal runs it on development data)
 docs/decision_record.md    model choice, fixed before any test run
 ```
 
@@ -92,6 +98,8 @@ docs/decision_record.md    model choice, fixed before any test run
 - **Probability:** ZIP codes given a 70% or higher chance beat their metro 86% of the time.
 - **Drivers:** momentum and cheapness relative to the metro carry most of the signal.
 - **Images:** aerial-image inputs did not improve any model, and real images scored no better than shuffled ones.
+  A MobileNetV2 network retrained on the photos ranks ZIP codes on its own (0.24 in 2019), but adding it to
+  the forest lowered accuracy at every weight, so the headline model uses no images.
 - **Robustness:** lagging census inputs by an extra year changes nothing.
 
 ## Limits

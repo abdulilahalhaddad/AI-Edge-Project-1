@@ -1,0 +1,27 @@
+{
+ "frozen": {
+  "epochs_run": 13,
+  "best_stop_loss": 0.4180516302585602,
+  "stop_year_rank_corr": 0.25132496458034387,
+  "seconds": 178
+ },
+ "fine_tuned": {
+  "epochs_run": 12,
+  "best_stop_loss": 0.3888881504535675,
+  "stop_year_rank_corr": 0.36065063551308524,
+  "seconds": 161
+ },
+ "chosen": "fine_tuned",
+ "image_size": 128,
+ "train_target_years": [
+  2014,
+  2015,
+  2016,
+  2017
+ ],
+ "stop_target_year": 2018,
+ "training_rows": 22371,
+ "target_sd": 0.0361800123227859,
+ "photos_read": 35019,
+ "clipped_photos_skipped": 1102
+}

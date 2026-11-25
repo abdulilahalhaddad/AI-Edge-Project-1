@@ -21,3 +21,6 @@ The headline model stays the random forest whatever the test shows. If another m
 
 ## Reasons
 The random forest had the lowest error on the rolling training years (3.05 points) and on 2019 validation (2.80 points), and the highest rank correlation (0.56). Linear regression is close (0.54) and is kept as the transparent comparison.
+
+## Update, 25 November 2026: image network (before any test run)
+The MobileNetV2 network retrained in Colab (`src/05c_image_network_colab.ipynb`, target years 2014-2017, stopping on 2018) ranks ZIP codes on its own with a rank correlation of 0.24 in 2019. The blend weight chosen on 2018 was 0: adding its score to the forest lowered the ranking at every weight tried, in 2018 and in 2019. It is therefore **not** part of the headline model. It is still scored on the locked years, alone, for the record.

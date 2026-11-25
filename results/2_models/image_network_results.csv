@@ -1,0 +1,11 @@
+model,val2019_rank_corr,val2019_top_fifth_alpha_points
+Random forest alone,0.5635177369680318,2.3786339778857526
+Image network only (score_frozen),0.11949293969662676,0.4551816037011632
+Forest + 0 x score_frozen,0.5635177369680318,2.3786339778857526
+Forest + 0 x shuffled score_frozen (placebo),0.5635177369680318,2.3786339778857526
+Image network only (score_fine_tuned),0.23620033968160478,0.9010570468385284
+Forest + 0 x score_fine_tuned,0.5635177369680318,2.3786339778857526
+Forest + 0 x shuffled score_fine_tuned (placebo),0.5635177369680318,2.3786339778857526
+Image network only (image_score),0.23620033968160478,0.9010570468385284
+Forest + 0 x image_score,0.5635177369680318,2.3786339778857526
+Forest + 0 x shuffled image_score (placebo),0.5635177369680318,2.3786339778857526
