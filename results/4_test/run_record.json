@@ -1,0 +1,20 @@
+{
+ "run_at": "2026-11-25T18:48:57",
+ "rehearsal": false,
+ "fit_target_years": [
+  2014,
+  2015,
+  2016,
+  2017,
+  2018,
+  2019
+ ],
+ "scored": {
+  "2020 (stress)": 5596,
+  "2021 (stress)": 5596,
+  "2022 (stress)": 5596,
+  "2023 (test)": 5597,
+  "2020-2022 stress, pooled": 16788
+ },
+ "git_commit": "7351c33"
+}
