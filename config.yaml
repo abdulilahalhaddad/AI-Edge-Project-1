@@ -8,6 +8,14 @@ paths:
   processed: data/processed
   models: models
   reports: reports
+  # ZIP-year table with zipcode, year, target and tabular inputs. Provisional stand-in
+  # until the tabular workstream's panel exists; switch this path when it does.
+  panel: data/processed/panel_provisional.parquet
+
+split:
+  train_years: [2013, 2019]   # row years (inputs known in December)
+  valid_years: [2020, 2020]
+  test_years: [2021, 2022]
 
 seed: 0
 

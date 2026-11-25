@@ -1,0 +1,56 @@
+{
+  "bootstrap_R3_minus_R0": {
+    "gb": {
+      "family": "gb",
+      "run": "R3",
+      "delta": -0.003309111632767814,
+      "ci_low": -0.012762992721321993,
+      "ci_high": 0.005783250822688366
+    },
+    "ridge": {
+      "family": "ridge",
+      "run": "R3",
+      "delta": -0.019877085163002156,
+      "ci_low": -0.025715363210664564,
+      "ci_high": -0.013840208415137237
+    },
+    "nn": {
+      "family": "nn",
+      "run": "R3",
+      "delta": -0.01938731763589263,
+      "ci_low": -0.034605897836248324,
+      "ci_high": -0.003460312004864504
+    },
+    "gb_R1": {
+      "family": "gb",
+      "run": "R1",
+      "delta": 0.00913818989265544,
+      "ci_low": 0.0016699570587583555,
+      "ci_high": 0.017814265475240388
+    },
+    "gb_R5": {
+      "family": "gb",
+      "run": "R5",
+      "delta": 0.00012660529865676784,
+      "ci_low": -0.007281497636870029,
+      "ci_high": 0.009045887778668025
+    }
+  },
+  "blend": {
+    "family": "ridge",
+    "weight": 0.0,
+    "valid_spearman": 0.14578344930554282,
+    "valid_spearman_w0": 0.14578344930554282,
+    "test_rmse": 0.035159612801044474,
+    "test_spearman": 0.2042276800128932,
+    "test_top_decile": 0.006625727767970709
+  },
+  "n_boot": 500,
+  "rows": {
+    "train": 39257,
+    "valid": 5610,
+    "test": 11221
+  },
+  "panel": "data/processed/panel_provisional.parquet",
+  "runtime_s": 421
+}

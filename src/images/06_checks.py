@@ -162,6 +162,38 @@ def main() -> None:
     check("Values", "model input list has 34 columns", len(groups["model_inputs"]) == 34,
           f"{len(groups['model_inputs'])} columns")
 
+    # Risk table: change columns should reflect real change, not one capture year
+    im = feat[feat.has_change == 1].drop_duplicates(["zipcode", "img_year"])
+    top = im.chg_cos >= im.chg_cos.quantile(0.9)
+    share = im.img_year.value_counts(normalize=True)
+    top_share = im[top].img_year.value_counts(normalize=True)
+    worst = top_share.idxmax()
+    over = (top_share / share).dropna()
+    over = over[over >= 2]
+    check("Values", "chg_cos not dominated by one image year (no year > 25% of top-decile changes)",
+          top_share.max() <= 0.25,
+          f"largest: {int(worst)} with {top_share.max():.0%} of top decile vs {share[worst]:.0%} of images; "
+          f"over-represented >=2x: " + (", ".join(f"{int(y)} ({r:.1f}x, {share[y]:.1%} of images)"
+                                              for y, r in over.items()) or "none"))
+
+    # ---------------- Stage B, if run
+    sb_p = reports / "stage_b.json"
+    if sb_p.exists():
+        sb = json.loads(sb_p.read_text())
+        sc = pd.read_parquet(processed / "image_score.parquet")
+        sp = cfg["split"]
+        check("Stage B", "no training sample has a row year after the last train year",
+              sb["train_max_row_year"] <= sp["train_years"][1],
+              f"latest training row year {sb['train_max_row_year']}, {sb['train_rows']:,} samples")
+        ok_years = set(range(sp["valid_years"][0], sp["test_years"][1] + 1))
+        check("Stage B", "image_score.parquet holds validation and test rows only",
+              set(sc.year.unique()) <= ok_years and not sc.duplicated(["zipcode", "year"]).any(),
+              f"years {sorted(int(y) for y in sc.year.unique())}, {len(sc):,} rows")
+        ep = "; ".join(f"e{e['epoch']} {e['valid_spearman']:.4f}" for e in sb["epochs"])
+        check("Stage B", "validation Spearman logged per epoch, with the chosen epoch",
+              len(sb["epochs"]) >= 1 and sb["best_epoch"] >= 1,
+              f"{ep}; chosen epoch {sb['best_epoch']}")
+
     # ---------------- Sanity: nearest neighbours by raw, uncentred embedding
     latest_row = idx[idx.image_year <= fcfg["row_year_max"]].groupby("zipcode").tail(1)
     latest = latest_row.set_index("zipcode")
@@ -221,6 +253,18 @@ def main() -> None:
         "|---|---|---|---|",
     ]
     lines += [f"| {s} | {n} | {'PASS' if ok else '**FAIL**'} | {d} |" for s, n, ok, d in results]
+    if sb_p.exists():
+        lines += ["", "## Stage B: image-only model (fine-tuned ResNet-18)", "",
+                  f"Trained on {sb['train_rows']:,} rows (row years up to {sb['train_max_row_year']}), "
+                  f"best epoch {sb['best_epoch']}. Panel: `{sb['panel']}`.", "",
+                  "| Split | Rows | Within-metro Spearman | RMSE | Top-decile relative growth |",
+                  "|---|---|---|---|---|"]
+        for k, m in sb["metrics"].items():
+            lines.append(f"| {k} | {m['rows']:,} | {m['spearman_within_metro']:.4f} | {m['rmse']:.4f} | "
+                         f"{m['top_decile_rel_growth']:+.4f} |")
+        lines += ["", "| Epoch | Train Huber | Validation Spearman | Seconds |", "|---|---|---|---|"]
+        lines += [f"| {e['epoch']} | {e['train_huber']:.4f} | {e['valid_spearman']:.4f} | {e['seconds']} |"
+                  for e in sb["epochs"]]
     lines += [
         "",
         "## Coverage by row year",

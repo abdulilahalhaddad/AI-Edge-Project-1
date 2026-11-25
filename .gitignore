@@ -9,3 +9,6 @@ data/interim/
 
 # Fine-tuned weights (Stage B)
 models/*.pt
+
+# Run logs (progress-bar output); results live in the .md/.json/.csv reports
+reports/*.log
