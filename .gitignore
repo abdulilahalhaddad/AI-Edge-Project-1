@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+.DS_Store
+
+# Raw data is a symlink to the Kaggle download (12 GB); never commit it
+data/raw
+# Large intermediates (embeddings ~140 MB); rebuild with src/images/02_embed.py
+data/interim/
+
+# Fine-tuned weights (Stage B)
+models/*.pt
+
+# Run logs (progress-bar output); results live in the .md/.json/.csv reports
+reports/*.log

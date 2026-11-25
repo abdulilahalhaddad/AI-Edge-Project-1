@@ -1,0 +1,53 @@
+# All paths, cut-off years and seeds for the image pipeline.
+# Paths are relative to the repo root.
+
+paths:
+  image_root: data/raw/Housets_Image/Housets_Final
+  tabular_csv: data/raw/HouseTS.csv
+  interim: data/interim
+  processed: data/processed
+  models: models
+  reports: reports
+  # ZIP-year table with zipcode, year, target and tabular inputs. Provisional stand-in
+  # until the tabular workstream's panel exists; switch this path when it does.
+  panel: data/processed/panel_provisional.parquet
+
+split:
+  train_years: [2013, 2019]   # row years (inputs known in December)
+  valid_years: [2020, 2020]
+  test_years: [2021, 2022]
+
+seed: 0
+
+embed:
+  model: resnet50            # torchvision, ImageNet1K_V2 weights, frozen
+  input_size: 448            # 448 -> 14x14 feature map; fallback 224 -> 7x7
+  mask_threshold: 8          # pixel is inside the ZIP if any channel > this
+  batch_size: 64
+  num_workers: 8
+
+features:
+  pca_fit_max_year: 2017     # scaler + PCA fitted only on images up to this year
+  n_components: 16
+  n_change_components: 8
+  centring_min_group: 20     # (city, image_year) groups smaller than this use the image_year mean
+  min_coverage: 0.5          # drop partial captures: images whose valid_frac is below this share
+                             # of the ZIP's fullest image are treated as missing (0 = keep all)
+  row_year_min: 2013
+  row_year_max: 2022
+
+expected:
+  n_images: 35099
+  n_zips_with_image: 5611
+  n_zips_csv: 6226
+  # PRD figures, valid with min_coverage 0. With partial captures dropped, 06_checks
+  # recomputes the expected counts from the kept images and reports both.
+  has_image_by_year: {2013: 5606, 2014: 5607}   # 5611 from 2015
+  has_change_by_year: {2013: 482, 2014: 3107}   # >= 5573 from 2015
+
+sanity:
+  urban_zip: 10003           # Manhattan
+  rural_zip: 15437           # Pittsburgh metro
+  manhattan_zip_range: [10001, 10282]
+  rural_metro: PGH
+  n_neighbours: 5
