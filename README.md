@@ -76,7 +76,7 @@ results/  1_data/  2_models/  3_impact/     small result tables behind every cha
 docs/decision_record.md    model choice, fixed before any test run
 ```
 
-## Results (training and validation years only)
+## Results on development years (2016-2019)
 
 **Model comparison, validation year 2019** (within-metro rank correlation of predicted and actual):
 
@@ -102,13 +102,51 @@ docs/decision_record.md    model choice, fixed before any test run
   the forest lowered accuracy at every weight, so the headline model uses no images.
 - **Robustness:** lagging census inputs by an extra year changes nothing.
 
+## Final test: unseen years 2020-2023 (run once)
+
+The model and decision rule were fixed in `docs/decision_record.md` before the locked years were opened. Every model was
+refit on target years 2014-2019 and scored once (`src/08_test.py`, record in `results/4_test/run_record.json`).
+
+| Unseen year | Forest top-fifth alpha (points) | Momentum rule | Forest minus momentum (95% interval) | Forest picks beating metro |
+|---|---|---|---|---|
+| 2020 (pandemic) | 2.54 | 2.03 | +0.51 (0.19 to 0.82) | 83% |
+| 2021 (boom) | 0.86 | 0.90 | -0.05 (-0.41 to 0.34) | 57% |
+| 2022 (rate shock) | 0.97 | 1.07 | -0.09 (-0.55 to 0.43) | 65% |
+| **2023 (main test)** | **0.15 (-0.17 to 0.45)** | 0.45 | -0.29 (-0.82 to 0.16) | 60% |
+| All four years | 1.13 (0.83 to 1.45) | 1.11 | +0.02 (-0.22 to 0.24) | 66% |
+
+**What worked.** A data-driven screen still beat the metro in every unseen year: about 1.1 points a year
+(~$1.1 million on $100 million, gross). It found 3.4 of each metro's actual top-fifth ZIP codes per 10 screened,
+against 2 at random. ZIP codes given 70%+ odds beat their metro 69% of the time against a 52% base rate (2023: 65% against 54%).
+
+**What did not.** The edge fell from 3.3 points (2016-2019) to 1.1, and after 2020 the forest no longer beat the
+simple momentum rule; on 2023 its alpha cannot be told apart from zero. Linear models, boosted trees and the neural
+network tied with it. The photo-only image network was negative in 2021-2023, confirming it was right to leave it out.
+Under the pre-registered rule the random forest remains the reported model; switching to momentum on these results
+would be choosing on the test.
+
+**Why** (`src/09_diagnosis.py`, after the test, no model changed). Within-metro rank correlation with next-year excess growth:
+
+| Signal | 2016-2020 | 2021-2023 |
+|---|---|---|
+| Cheapness (price level vs metro) | about -0.55 | about 0 |
+| Momentum (last year's excess growth) | about 0.53 | about 0.18 |
+
+The "cheap neighbourhoods catch up" pattern disappeared after the pandemic migration and rate shock, and momentum
+weakened. The model learned a relationship that was stable for seven years and then changed: a regime change,
+not overfitting to the training years. Four-year pooled numbers: `src/09c_four_year_summary.py`; chart: `figures/4_test/fig17_unseen_years.png`.
+
 ## Limits
 
 - **Index, not assets.** Alpha is measured on a smoothed neighbourhood index, before costs and excluding rent. Part of the momentum signal comes from that smoothing.
-- **Few market years.** Results rest on five training years, all in a rising market. Validation is a single year.
+- **Regime change.** The signals were learned in a rising, low-rate market and weakened sharply from 2021 (see above).
+- **Few market years.** Five training years and a single validation year; the 2023 test is one year of about 5,600 ZIP codes in 30 metros.
 - **Coverage.** New York keeps 54% of its ZIP codes and Philadelphia 72%.
 - **Earlier exploration.** Exploratory charts made before the split was fixed covered all years. No model was fitted or tuned on the locked years.
 
 ## Next steps
 
-Open the test and stress-test years once, then finish the deck, the video and the final one-page README.
+- Prefer the simple momentum screen in practice, and confirm that on a fresh year (2024) rather than on the used test.
+- Re-check each year whether momentum and cheapness still predict; retrain or stop when they do not.
+- Add inputs for the new regime (rate sensitivity, migration, remote work) and deal-level rents and costs.
+- Check whether top picks are simply higher-risk (sensitivity to the metro).
