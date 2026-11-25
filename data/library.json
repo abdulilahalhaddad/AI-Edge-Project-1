@@ -1,0 +1,32 @@
+{
+  "asOf": "2026-11-24",
+  "cases": [
+    {"id":"AT-101","zip":"30318","metro":"Atlanta","title":"Infill rental packet","focus":"Prioritize financing sensitivity if the evidence supports analyst review."},
+    {"id":"AT-102","zip":"30310","metro":"Atlanta","title":"Small multifamily packet","focus":"What needs to be collected before an analyst can review this packet?"}
+  ],
+  "checks": [
+    {"topic":"comps","label":"Closed-sale comps","policy":"P1","days":90,"minimum":5,"focusTerms":["comps","comparables","closed sales"],"clear":"verify-comps","blocked":"collect-comps"},
+    {"topic":"debt","label":"Financing terms","policy":"P2","days":30,"focusTerms":["financing","borrowing","debt","lender","interest rate"],"clear":"stress-debt","blocked":"refresh-debt"},
+    {"topic":"supply","label":"Supply pipeline","policy":"P3","days":90,"focusTerms":["supply","delivery","deliveries","pipeline","openings"],"clear":"verify-supply","blocked":"collect-supply"}
+  ],
+  "actions": {
+    "verify-comps":{"label":"Validate comp selection","detail":"Verify transaction dates and arm’s-length status against the source records.","owner":"Market analyst"},
+    "stress-debt":{"label":"Stress-test financing terms","detail":"Run the downside case with a higher borrowing cost and review covenant headroom.","owner":"Capital markets analyst"},
+    "verify-supply":{"label":"Confirm delivery timing","detail":"Check the assumed opening dates with the listed projects before underwriting rents.","owner":"Market analyst"},
+    "collect-comps":{"label":"Obtain recent closed-sale comps","detail":"Request at least five closed sales dated within the 90-day lookback.","owner":"Market analyst"},
+    "refresh-debt":{"label":"Refresh the lender indication","detail":"Request dated indicative terms and confirm the rate, leverage and conditions.","owner":"Capital markets analyst"},
+    "collect-supply":{"label":"Update the supply pipeline","detail":"Request a dated pipeline scan for the subject trade area.","owner":"Market analyst"}
+  },
+  "documents": [
+    {"id":"P1","type":"Pilot rule","topic":"comps","title":"Diligence standard §1 · Comparables","text":"The analyst packet requires at least five closed-sale comparables in a snapshot dated within 90 calendar days of intake."},
+    {"id":"P2","type":"Pilot rule","topic":"debt","title":"Diligence standard §2 · Financing","text":"The analyst packet requires a dated lender indication within 30 calendar days of intake. Indicative terms are subject to underwriting."},
+    {"id":"P3","type":"Pilot rule","topic":"supply","title":"Diligence standard §3 · Supply","text":"The analyst packet requires a dated supply-pipeline scan within 90 calendar days of intake."},
+    {"id":"P4","type":"Pilot rule","topic":"routing","title":"Diligence standard §4 · Routing","text":"Hold the packet while any required check is missing, stale or below threshold. Route a complete packet to a human analyst. An analyst handoff carries no acquisition authorization."},
+    {"id":"A1","type":"Fictional case evidence","caseId":"AT-101","topic":"comps","title":"Closed-sales snapshot","date":"2026-11-09","count":7,"text":"The mock broker export shows seven closed sales for the subject trade area. The comparison set still requires analyst verification."},
+    {"id":"A2","type":"Fictional case evidence","caseId":"AT-101","topic":"debt","title":"Indicative lender terms","date":"2026-11-13","text":"The mock lender email gives indicative terms and identifies borrowing cost and covenant headroom for downside analysis."},
+    {"id":"A3","type":"Fictional case evidence","caseId":"AT-101","topic":"supply","title":"Supply-pipeline scan","date":"2026-10-21","text":"The mock market scan identifies two planned deliveries near the subject trade area and gives expected delivery windows."},
+    {"id":"B1","type":"Fictional case evidence","caseId":"AT-102","topic":"comps","title":"Intake record · Comparable sales","date":"2026-11-20","text":"The intake log records the request for recent sales. A closed-sales snapshot has yet to arrive."},
+    {"id":"B2","type":"Fictional case evidence","caseId":"AT-102","topic":"debt","title":"Indicative lender terms","date":"2026-10-01","text":"The mock packet contains an indicative lender email dated October 1. The intake log lists no newer lender indication."},
+    {"id":"B3","type":"Fictional case evidence","caseId":"AT-102","topic":"supply","title":"Supply-pipeline scan","date":"2026-11-05","text":"The mock market scan lists planned deliveries and their expected timing within the subject trade area."}
+  ]
+}

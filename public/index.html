@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102521">
+  <title>Market Diligence Desk</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <div class="mast-inner">
+      <span class="mark" aria-hidden="true">▥</span>
+      <div class="brand">Market Diligence Desk</div>
+      <span class="mast-label">Real estate investment committee</span>
+    </div>
+  </header>
+  <main>
+    <div class="intro">
+      <div>
+        <h1>Market diligence brief</h1>
+        <p>Check the packet, inspect the sources, and prepare an analyst handoff.</p>
+      </div>
+      <p class="dataset">Fictional case packets <span id="as-of"></span></p>
+    </div>
+    <div class="desk">
+      <aside class="intake" aria-label="Review inputs">
+        <form id="intake">
+          <label class="section-label" for="case">Case packet</label>
+          <select id="case" name="case" disabled></select>
+          <p id="packet-desc" class="hint"></p>
+          <label class="section-label focus" for="focus">Committee focus</label>
+          <textarea id="focus" name="focus" maxlength="500" rows="4" placeholder="What should the analyst prioritize?"></textarea>
+          <button id="run" class="primary" type="submit" disabled>Prepare brief <span aria-hidden="true">→</span></button>
+          <p id="mode-hint" class="hint"></p>
+        </form>
+        <details class="method">
+          <summary>How routing works</summary>
+          <p>The evidence rules set the routing decision. A single explicit priority can lead if it is eligible. The local model orders the remaining eligible work.</p>
+        </details>
+      </aside>
+      <section id="workspace" class="workspace" aria-label="Diligence brief" aria-busy="false">
+        <div class="workspace-bar">
+          <div><p class="section-label" id="report-label">Committee brief</p><h2 id="report-name">Choose a case packet</h2></div>
+          <button type="button" class="secondary" id="download" hidden><span id="download-label">Download brief</span> <span aria-hidden="true">↓</span></button>
+        </div>
+        <div id="notice" role="status" aria-live="polite"></div>
+        <div id="result" hidden>
+          <div class="route" id="route">
+            <div><div class="route-caption">Routing decision <span id="route-ref"></span></div><h3 id="route-name"></h3><p id="route-detail"></p></div>
+            <span id="rank-mode" class="mode"></span>
+          </div>
+          <div class="report-content">
+            <div class="report-grid">
+              <section aria-labelledby="check-heading">
+                <h3 id="check-heading">Evidence checks</h3>
+                <ul class="checks" id="checks"></ul>
+              </section>
+              <section aria-labelledby="actions-heading">
+                <h3 id="actions-heading">Analyst next steps</h3>
+                <ol class="actions" id="actions"></ol>
+              </section>
+            </div>
+            <section class="sources" aria-labelledby="source-heading">
+              <h3 id="source-heading">Source excerpts</h3>
+              <div id="sources"></div>
+            </section>
+            <details class="method trace">
+              <summary>Workflow trace</summary>
+              <ol id="trace"></ol>
+            </details>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
