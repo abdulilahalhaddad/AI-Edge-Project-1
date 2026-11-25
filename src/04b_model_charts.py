@@ -11,14 +11,14 @@ R = pd.read_csv("data/dev/model_results.csv"); R = R[R.model != "Baseline: zero"
 P = pd.read_csv("data/dev/validation_predictions.csv"); S = pickle.load(open("data/dev/models_stage4.pkl", "rb"))
 print(R[["model", "val_rmse_points"]].round(5).to_string(index=False))
 # Figure 9
-fig, axes = plt.subplots(1, 3, figsize=(13, 3.9), sharey=True)
-for ax, (col, title, fmt) in zip(axes, [("val_rank_corr", "Rank correlation, predicted vs actual", "{:.2f}"),
+fig, axes = plt.subplots(1, 3, figsize=(13, max(3.9, 0.45 * len(R))), sharey=True)
+for ax, (col, title, fmt) in zip(axes, [("val_rank_corr", "Rank correlation, predicted vs actual", "{:.3f}"),
         ("val_top_minus_bottom_points", "Top fifth minus bottom fifth (points)", "{:.1f}"), ("val_top_fifth_beat_rate", "Top-fifth picks that beat their metro", "{:.0%}")]):
     cols = [GREY if m.startswith("Baseline") else BLUE for m in R.model]
     ax.barh(R.model, R[col], color=cols, height=.65); ax.set_title(title); ax.grid(axis="y", visible=False)
     for i, v in enumerate(R[col]): ax.text(v, i, " " + fmt.format(v), va="center", fontsize=9, color=INK)
     ax.set_xlim(0, R[col].max() * 1.18)
-fig.suptitle("Figure 9. Validation year 2019: every model beats the momentum baselines (grey)", x=0.01, ha="left", fontsize=11.5, fontweight="bold", y=1.03)
+fig.suptitle("Figure 9. Within-metro ranking performance in 2019 validation", x=0.01, ha="left", fontsize=11.5, fontweight="bold", y=1.03)
 fig.savefig("figures/fig9_model_comparison.png"); plt.close(fig)
 # Figure 10: the decision tree, top three levels
 tree = S["fitted"]["Decision tree"]; names = [F.FEATURES.get(f, "Two-week figure missing") for f in S["feats"]]

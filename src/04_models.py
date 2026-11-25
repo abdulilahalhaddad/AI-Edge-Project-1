@@ -4,7 +4,9 @@ Reads data/dev/ only.
 """
 import json, itertools, importlib.util, warnings
 import numpy as np, pandas as pd
+from sklearn.compose import TransformedTargetRegressor
 from sklearn.linear_model import LinearRegression, Ridge, Lasso
+from sklearn.neural_network import MLPRegressor
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 from sklearn.tree import DecisionTreeRegressor
@@ -30,6 +32,24 @@ def metrics(df, pred):
     return out
 
 def grid(g): return [dict(zip(g, v)) for v in itertools.product(*g.values())]
+
+def neural_net(hidden_layer_sizes, alpha):
+    # Fit both scalers on the current training fold and predict in original target units.
+    return TransformedTargetRegressor(
+        regressor=make_pipeline(
+            StandardScaler(),
+            MLPRegressor(
+                hidden_layer_sizes=hidden_layer_sizes,
+                alpha=alpha,
+                batch_size=256,
+                max_iter=200,
+                early_stopping=False,
+                random_state=SEED,
+            ),
+        ),
+        transformer=StandardScaler(),
+    )
+
 MODELS = {
  "Linear regression": (lambda: make_pipeline(StandardScaler(), LinearRegression()), [{}]),
  "Ridge regression": (lambda alpha: make_pipeline(StandardScaler(), Ridge(alpha=alpha)), grid({"alpha": [1, 10, 100, 1000, 3000, 10000]})),
@@ -40,6 +60,7 @@ MODELS = {
                    max_features=0.5, n_jobs=-1, random_state=SEED), grid({"max_depth": [6, 10, None], "min_samples_leaf": [20, 50]})),
  "Gradient boosted trees": (lambda max_depth, learning_rate, max_iter: HistGradientBoostingRegressor(max_depth=max_depth, learning_rate=learning_rate,
                    max_iter=max_iter, min_samples_leaf=50, random_state=SEED), grid({"max_depth": [2, 3, 4], "learning_rate": [0.03, 0.1], "max_iter": [100, 300]})),
+ "Neural network (MLP)": (neural_net, grid({"hidden_layer_sizes": [(32,), (64,)], "alpha": [0.01, 1.0]})),
 }
 def fit_pred(make, params, tr, te):
     m = make(**params).fit(tr[FEATS], tr[Y]); return m, m.predict(te[FEATS])
