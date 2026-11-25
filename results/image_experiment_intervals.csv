@@ -1,0 +1,10 @@
+model,comparison,delta,lo95,hi95
+Ridge regression,+ colour statistics minus tabular only,0.0004342877303918763,-0.002865537940627405,0.003938121774993153
+Ridge regression,+ all image inputs minus tabular only,-0.003644016281910439,-0.008765291658218682,0.0012650013788277382
+Ridge regression,+ shuffled images (placebo) minus tabular only,-0.00032980641214849966,-0.002770907946446563,0.0025283643119906924
+Random forest,+ colour statistics minus tabular only,-0.002618610653138127,-0.0066428929331285354,0.0011334139120016374
+Random forest,+ all image inputs minus tabular only,-0.005712505485925365,-0.010235193689914834,-0.0005093151394995522
+Random forest,+ shuffled images (placebo) minus tabular only,-0.003309536649410486,-0.007038528511777592,0.0004773006651343557
+Gradient boosted trees,+ colour statistics minus tabular only,-0.0037029846760205085,-0.008088281077266854,0.0011233299062283508
+Gradient boosted trees,+ all image inputs minus tabular only,-0.0050798337085848026,-0.010687478682650445,0.0005663727323800871
+Gradient boosted trees,+ shuffled images (placebo) minus tabular only,-0.0007005163146934878,-0.003898008255258864,0.0027550795946461757

@@ -44,8 +44,15 @@ python src/01_visualise.py                    # figures 1-7, training years only
 python src/02_clean.py                        # cleaning rules learned on training years
 python src/03_features.py                     # 20 inputs + 1 flag
 python src/03b_feature_chart.py               # figure 8
-python src/04_models.py                       # baselines and six models (seed 15071)
+python src/03c_image_inputs.py path/to/image_features.parquet   # image inputs, row years <= 2018
+python src/04_models.py                       # baselines and six models, ZIP codes with images (seed 15071)
 python src/04b_model_charts.py                # figures 9-12
+python src/05_images.py                       # do image inputs help? (with placebo)
+python src/05b_image_chart.py                 # figure 13
+python src/06_impact.py                       # alpha and sourcing efficiency, 2016-2019 out of sample
+python src/06b_impact_charts.py               # figures 14-15
+python src/07_extras.py                       # neural network, probability output, ablation, census lag
+python src/07b_probability_chart.py           # figure 16
 ```
 
 ## Cleaning (rules in `results/cleaning_rules.json`)
@@ -63,19 +70,30 @@ python src/04b_model_charts.py                # figures 9-12
 - About 9% of months have market data carried forward from the prior month;
   these are flagged, and market inputs use 12-month figures.
 
-## Results so far (validation year 2019)
+## Results so far (validation year 2019, 5,596 ZIP codes with images)
 
 | Model | Rank correlation | Top fifth minus bottom fifth (points) | Top-fifth picks beating metro | R-squared |
 |---|---|---|---|---|
-| Baseline: scaled momentum | 0.42 | 3.1 | 72% | 0.01 |
-| Linear regression | 0.53 | 4.3 | 81% | 0.18 |
-| Ridge / lasso regression | 0.53 | 4.3 | 81% / 80% | 0.18 |
-| Decision tree | 0.48 | 4.0 | 79% | 0.18 |
-| Random forest | 0.55 | 4.5 | 82% | 0.24 |
-| Gradient boosted trees | 0.55 | 4.5 | 81% | 0.22 |
+| Baseline: scaled momentum | 0.44 | 3.4 | 73% | 0.05 |
+| Linear / ridge / lasso regression | 0.54 | 4.6 | 81% | 0.22 |
+| Decision tree | 0.51 | 4.3 | 80% | 0.19 |
+| Gradient boosted trees | 0.56 | 4.7 | 81% | 0.26 |
+| Neural network (one layer, 32 units) | 0.57 | – | – | 0.27 |
+| **Random forest (headline)** | **0.56** | **4.7** | **82%** | **0.27** |
 
-Rank correlation and the fifths are computed within each metro. Full numbers,
-including the rolling training-year results, are in `results/model_results.csv`.
+Rank correlation and fifths are computed within each metro. Settings were chosen on rolling
+training years (fit to year t-1, predict year t). The headline model was fixed before any test
+run: see `docs/decision_record.md`.
+
+- **Image inputs** (34 features from a pretrained ResNet-50 and colour statistics) do not improve
+  any model, and real images score no better than images shuffled within metro and year.
+- **Alpha, 2016-2019 out of sample:** an equal-weighted portfolio of each metro's top-fifth ZIP codes
+  beat the metro by 3.3 points a year (forest), against 2.7 for the momentum rule; difference
+  0.4 to 0.8 points (95% interval, resampling metros). Gross of costs; price appreciation only.
+- **Sourcing:** screening the top 20% of ZIP codes finds 58% of true top-fifth outperformers.
+- **Probability output:** ZIP codes given 70% or more beat their metro 86% of the time.
+- **Robustness:** lagging census inputs one extra year changes nothing; momentum plus price level
+  alone reach 3.2 points of the forest's 3.3.
 
 ## Known limits and disclosures
 
@@ -90,5 +108,5 @@ including the rolling training-year results, are in `results/model_results.csv`.
 
 ## Still to do
 
-Join image features on `zipcode` and `year`, restrict to ZIP codes with
-images, choose the final model, then open the test and stress-test data once.
+Retrain the fine-tuned image network on this split, open the test and stress-test data once,
+finish the deck, video and one-page README.
