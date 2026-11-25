@@ -19,4 +19,4 @@ a2.bar(cats, vals, color=["#b9d3f2", GREY, BLUE], width=0.6); a2.grid(axis="x", 
 for i, v in enumerate(vals): a2.text(i, v + 1.5, f"{v:.0f}%", ha="center", fontsize=10, color=INK)
 a2.set_ylim(0, 100); a2.set_ylabel("Share that actually beat the metro (%)", color="#52514e"); a2.tick_params(axis="x", labelsize=8.5, colors="#52514e")
 a2.set_title(f"Figure 16b. The top flag ({f['share_with_p>=0.7']*100:.0f}% of ZIP codes) is right {f['beat_rate_when_p>=0.7']*100:.0f}% of the time", loc="left", fontsize=10.5, fontweight="bold")
-fig.tight_layout(); fig.savefig("figures/fig16_probability.png", bbox_inches="tight", facecolor="white")
+fig.tight_layout(); fig.savefig("figures/3_impact/fig16_probability.png", bbox_inches="tight", facecolor="white")

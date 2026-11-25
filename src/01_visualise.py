@@ -52,7 +52,7 @@ ax.set_xlim(2012.5, 2023.5); ax.set_ylim(0, 1); ax.set_yticks([]); ax.set_xticks
 for s in ax.spines.values(): s.set_visible(False)
 ax.set_xlabel("Target year: the year in which the 12-month window ends (inputs are known the December before)")
 ax.set_title("Figure 1. How the data is split by time (rows before any ZIP codes are excluded)")
-fig.savefig("figures/fig1_split_timeline.png"); plt.close(fig)
+fig.savefig("figures/1_explore/fig01_split_timeline.png"); plt.close(fig)
 
 # ---------- Figure 2: price paths by metro (to December 2018) ----------
 mm = m[~m.zipcode.isin(broken)]
@@ -69,7 +69,7 @@ for ax, c in zip(axes.ravel(), order):
     ax.minorticks_off()
 fig.suptitle("Figure 2. Home values by metro, March 2012 to December 2018 - line = typical ZIP code, band = middle half of ZIP codes",
              x=0.01, ha="left", fontsize=11, fontweight="bold")
-fig.tight_layout(); fig.savefig("figures/fig2_metro_prices.png"); plt.close(fig)
+fig.tight_layout(); fig.savefig("figures/1_explore/fig02_metro_prices.png"); plt.close(fig)
 
 # ---------- Figure 3: the target ----------
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(11, 3.8), gridspec_kw={"width_ratios": [1.2, 1]})
@@ -84,7 +84,7 @@ bp = a2.boxplot(by, tick_labels=sorted(tr.target_year.unique()), whis=(10, 90), 
                 medianprops={"color": INK}, boxprops={"facecolor": "#cfe0f5", "edgecolor": BLUE}, whiskerprops={"color": BLUE}, capprops={"color": BLUE})
 a2.axhline(0, color=INK, linewidth=1); a2.set_xlabel("Target year"); a2.set_ylabel("Percentage points")
 a2.set_title("Figure 3b. Its spread is stable from year to year")
-fig.tight_layout(); fig.savefig("figures/fig3_target.png"); plt.close(fig)
+fig.tight_layout(); fig.savefig("figures/1_explore/fig03_target.png"); plt.close(fig)
 
 # ---------- Figure 4: momentum ----------
 d = tr.dropna(subset=["past_excess_growth"]).copy()
@@ -99,7 +99,7 @@ ax.axhline(0, color=INK, linewidth=1); ax.set_xticks(range(1, 11))
 ax.set_xticklabels(["1\nweakest", "2", "3", "4", "5", "6", "7", "8", "9", "10\nstrongest"])
 ax.set_xlabel("Rank within metro on LAST year's growth versus metro (tenths)"); ax.set_ylabel("Average excess growth NEXT year (points)")
 ax.set_title("Figure 4. Momentum: last year's leaders within a metro tend to lead again"); ax.grid(axis="x", visible=False)
-fig.tight_layout(); fig.savefig("figures/fig4_momentum.png"); plt.close(fig)
+fig.tight_layout(); fig.savefig("figures/1_explore/fig04_momentum.png"); plt.close(fig)
 print("decile table:"); print((g * 100).round(2).to_string())
 
 # ---------- Figure 5: each column versus the target (rank correlation within metro and year) ----------
@@ -119,7 +119,7 @@ ax.set_xlabel("Rank correlation with next year's excess growth (average within m
 ax.set_title("Figure 5. Which columns line up with future outperformance (training years only)")
 ax.legend(handles=[Rectangle((0, 0), 1, 1, color=c) for c in gcol.values()], labels=list(gcol), frameon=False, loc="lower right", fontsize=9)
 ax.tick_params(axis="y", labelsize=8.5, colors="#52514e")
-fig.tight_layout(); fig.savefig("figures/fig5_feature_vs_target.png"); plt.close(fig)
+fig.tight_layout(); fig.savefig("figures/1_explore/fig05_feature_vs_target.png"); plt.close(fig)
 print("rank correlations:"); print(rc.round(3).to_string())
 
 # ---------- Figure 6: correlation between columns ----------
@@ -136,7 +136,7 @@ for k in [len(MARKET) - .5, len(MARKET) + len(POI) - .5]:
 for s in ax.spines.values(): s.set_visible(False)
 cb = fig.colorbar(im, ax=ax, fraction=.035, pad=.02); cb.set_label("Rank correlation (blue = move together, red = move opposite)"); cb.outline.set_visible(False)
 ax.set_title("Figure 6. How the columns relate to each other - solid blue blocks are near-duplicates")
-fig.tight_layout(); fig.savefig("figures/fig6_feature_correlations.png"); plt.close(fig)
+fig.tight_layout(); fig.savefig("figures/1_explore/fig06_feature_correlations.png"); plt.close(fig)
 hi = C.where(np.triu(np.ones(C.shape), 1).astype(bool)).stack(); print("pairs with |corr|>0.95:"); print(hi[hi.abs() > .95].round(3).to_string())
 
 # ---------- Figure 7: missing and suspect values ----------
@@ -148,7 +148,7 @@ ax.barh(y - .2, z_after.values, height=.38, color=BLUE, label=f"After removing {
 ax.set_yticks(y); ax.set_yticklabels(allc, fontsize=8.5, color="#52514e"); ax.invert_yaxis(); ax.grid(axis="y", visible=False)
 ax.set_xlabel("Share of training rows where the value is exactly 0 (%)"); ax.legend(frameon=False, fontsize=9, loc="lower right")
 ax.set_title("Figure 7. Zeros by column: there are no blank cells, so missing values hide as zeros")
-fig.tight_layout(); fig.savefig("figures/fig7_zeros_by_column.png"); plt.close(fig)
+fig.tight_layout(); fig.savefig("figures/1_explore/fig07_zeros_by_column.png"); plt.close(fig)
 print("blank cells in training rows:", int(tr_all[allc].isna().sum().sum()))
 print("zero share after (top):"); print(z_after.sort_values(ascending=False).head(12).round(2).to_string())
 print("by-metro training ZIP codes kept:"); k = tr.groupby("city").zipcode.nunique(); a = tr_all.groupby("city").zipcode.nunique()

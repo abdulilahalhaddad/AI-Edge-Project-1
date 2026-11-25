@@ -1,4 +1,4 @@
-"""Stage 6b: extras for the deck, training and validation years only (test data stays locked).
+"""Stage 7: robustness checks and probability output, training and validation years only (test data stays locked).
  a) Neural network (multilayer perceptron) added to the model ladder
  b) Probability output: chance a ZIP code beats its metro (logistic regression vs forest classifier)
  c) Ablation: momentum + price level only, versus all 21 inputs
@@ -77,7 +77,7 @@ trl = XL[XL.set == "train"]; bounds = {f: [float(trl[f].quantile(.01)), float(tr
 XL = universe(F.finish(XL, bounds)); OL = XL[XL.target_year >= 2016]
 score("Random forest: census lagged a year", oos(forest, FEATS, XL), OL)
 
-R = pd.DataFrame(res).T; R.to_csv("data/dev/extras_model_comparison.csv")
+R = pd.DataFrame(res).T; R.to_csv("data/dev/robustness_checks.csv")
 
 # b) probability of beating the metro
 Dc = D.assign(beat=(D[Y] > 0).astype(int)); probs = {}

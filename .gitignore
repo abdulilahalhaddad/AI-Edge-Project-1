@@ -1,4 +1,4 @@
-# Data is not stored in the repository (file size and HouseTS licence). See README.
-data/
+# Data is never stored in the repository (file size and HouseTS licence). See README.
+/data
 __pycache__/
 *.pkl

@@ -19,7 +19,7 @@ ax.set_ylabel("Return above metro, top-fifth picks (points)")
 ax.legend(frameon=False, fontsize=8.5, ncol=4, loc="upper center", bbox_to_anchor=(0.5, -0.17))
 ax.set_title("Figure 14. Alpha: ZIP codes ranked in the top fifth beat their metro by about 3 points a year\n"
              "On a \\$100 million fund, 1 point = \\$1 million a year, before costs. Each year predicted by a model trained only on earlier years.")
-fig.savefig("figures/fig14_alpha_by_year.png"); plt.close(fig)
+fig.savefig("figures/3_impact/fig14_alpha_by_year.png"); plt.close(fig)
 
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(12, 4.4), gridspec_kw={"width_ratios": [1.25, 1]})
 cov = Gn.coverage * 100
@@ -38,4 +38,4 @@ a2.barh(names[::-1], vals[::-1], color=[COL[n] for n in names[::-1]], height=0.6
 for i, v in enumerate(vals[::-1]): a2.text(v + 0.08, i, f"{v:.1f}", va="center", fontsize=9, color=INK)
 a2.set_xlim(0, 7); a2.set_xlabel("True top-fifth outperformers per 10 ZIP codes screened")
 a2.set_title("Figure 15b. Hit rate when the team covers 20%"); a2.tick_params(axis="y", labelsize=9)
-fig.tight_layout(); fig.savefig("figures/fig15_sourcing_efficiency.png"); plt.close(fig)
+fig.tight_layout(); fig.savefig("figures/3_impact/fig15_sourcing_efficiency.png"); plt.close(fig)

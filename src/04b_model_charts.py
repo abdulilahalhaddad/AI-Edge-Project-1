@@ -19,13 +19,13 @@ for ax, (col, title, fmt) in zip(axes, [("val_rank_corr", "Rank correlation, pre
     for i, v in enumerate(R[col]): ax.text(v, i, " " + fmt.format(v), va="center", fontsize=9, color=INK)
     ax.set_xlim(0, R[col].max() * 1.18)
 fig.suptitle("Figure 9. Validation year 2019: every model beats the momentum baselines (grey)", x=0.01, ha="left", fontsize=11.5, fontweight="bold", y=1.03)
-fig.savefig("figures/fig9_model_comparison.png"); plt.close(fig)
+fig.savefig("figures/2_models/fig09_model_comparison.png"); plt.close(fig)
 # Figure 10: the decision tree, top three levels
 tree = S["fitted"]["Decision tree"]; names = [F.FEATURES.get(f, "Two-week figure missing") for f in S["feats"]]
 fig, ax = plt.subplots(figsize=(20, 6)); ax.grid(False)
 plot_tree(tree, feature_names=names, max_depth=2, filled=False, impurity=False, rounded=True, fontsize=9, precision=3, ax=ax)
 ax.set_title("Figure 10. The decision tree (top three of four levels). 'value' is predicted growth versus metro: 0.02 = 2 points. Inputs are measured against the metro average.", fontsize=11)
-fig.savefig("figures/fig10_decision_tree.png"); plt.close(fig)
+fig.savefig("figures/2_models/fig10_decision_tree.png"); plt.close(fig)
 # Figure 11: drivers
 d = pd.read_csv("data/dev/model_drivers.csv").set_index("feature"); d.index = names
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(13.5, 6.3), sharey=False)
@@ -36,7 +36,7 @@ p = d.boosted_permutation_importance_points.clip(lower=0).sort_values()
 a2.barh(p.index, p.values, color=BLUE, height=.68); a2.grid(axis="y", visible=False); a2.tick_params(axis="y", labelsize=8.5)
 a2.set_title("Boosted trees: error added when the input is scrambled (points, 2019)")
 fig.suptitle("Figure 11. What drives the predictions", x=0.01, ha="left", fontsize=11.5, fontweight="bold", y=1.0); fig.tight_layout()
-fig.savefig("figures/fig11_drivers.png"); plt.close(fig)
+fig.savefig("figures/2_models/fig11_drivers.png"); plt.close(fig)
 # Figure 12: predicted fifths vs actual
 show = [("Baseline: scaled momentum", GREY), ("Linear regression", "#9ec3ee"), ("Random forest", BLUE)]
 fig, ax = plt.subplots(figsize=(8.5, 3.9)); w = .26
@@ -47,7 +47,7 @@ for k, (m, col) in enumerate(show):
 ax.axhline(0, color=INK, lw=1); ax.set_xticks(range(5)); ax.set_xticklabels(["Bottom fifth", "2", "3", "4", "Top fifth"]); ax.grid(axis="x", visible=False)
 ax.set_xlabel("Model's ranking of ZIP codes within each metro (December 2018)"); ax.set_ylabel("Actual growth vs metro in 2019 (points)")
 ax.legend(frameon=False, fontsize=9, loc="upper left"); ax.set_title("Figure 12. Validation 2019: what each fifth of the ranking actually did")
-fig.savefig("figures/fig12_validation_fifths.png"); plt.close(fig)
+fig.savefig("figures/2_models/fig12_validation_fifths.png"); plt.close(fig)
 # per-metro consistency
 pm = P.groupby("city").apply(lambda z: pd.Series({m: z[m].corr(z.actual, method="spearman") for m in ["Baseline: scaled momentum", "Linear regression", "Random forest", "Gradient boosted trees"]}), include_groups=False)
 print("metros (of 30) where model rank corr > momentum:", {m: int((pm[m] > pm["Baseline: scaled momentum"]).sum()) for m in pm.columns[1:]})
