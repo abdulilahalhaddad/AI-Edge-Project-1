@@ -10,7 +10,8 @@ d = m[m.date.dt.month == 12].copy(); d["input_year"] = d.date.dt.year; d = d.sor
 d["lp"] = np.log(d.price); d["g"] = d.lp - d.groupby("zipcode").lp.shift(1)
 d["momentum"] = d.g - d.groupby(["city", "input_year"]).g.transform("mean")
 d["price_vs_metro"] = d.lp - d.groupby(["city", "input_year"]).lp.transform("mean")
-img = pd.read_parquet("/home/claude/br_O9IT/AI-Edge-Project-1-stage-a-image-features/data/processed/image_features.parquet", columns=["zipcode", "year", "has_image"])
+import sys
+img = pd.read_parquet(sys.argv[1], columns=["zipcode", "year", "has_image"])
 x = t.merge(d[["zipcode", "input_year", "momentum", "price_vs_metro"]], on=["zipcode", "input_year"]).merge(img.rename(columns={"year": "input_year"}), on=["zipcode", "input_year"])
 x = x[x.has_image == 1]
 out = x.groupby("target_year").apply(lambda y: pd.Series({c: y.groupby("city").apply(lambda z: z[c].corr(z.excess_growth_12m, method="spearman"), include_groups=False).mean()
